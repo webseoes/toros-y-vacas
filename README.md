@@ -1,4 +1,5 @@
 Configuaración del juego
+
 .env
 
 Cantidad de elementos a mostrar cuando se pida el ranking
