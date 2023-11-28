@@ -1,0 +1,257 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Juegos de Toros y Vacas",
+    "description": "Toros y vacas es un juego tradicional inglés a lápiz y papel para dos jugadores cuyo objetivo es adivinar un número constituido por cuatro dígitos. En una hoja de papel, un jugador escribe un número de 4 dígitos y lo mantiene en secreto. Las cifras deben ser todas diferentes, no se debe repetir ninguna dentro del mismo número. El otro jugador trata de adivinar el número secreto en varios intentos que son anotados y numerados. En cada intento anota una cifra de cuatro dígitos completa, ésta es evaluada por el jugador que guarda el número secreto. Si una cifra está presente y se encuentra en el lugar correcto es evaluada como un toro, si una cifra está presente pero se encuentra en un lugar equivocado es evaluada como una vaca. La evaluación se anota al lado del intento y es pública",
+    "contact": {
+      "email": "webseoes@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://avangenio.intranet/game/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "game",
+      "description": "Este será el único \"endpoint\" que tendremos en nuestra APP"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Obtiene los primeros 10 del ranking",
+        "description": "Se puede obtener la misma respuesta con usando cualquier método [post, put, delete]",
+        "responses": {
+          "200": {
+            "description": "Satisfactorio",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ranking_list": {
+                    "value": "[\n  {\n    \"user_name\": \"Alberto\",\n    \"user_age\": \"48\",\n    \"user_time\": \"265\",\n    \"user_tries\": \"7\",\n    \"updated_datetime\": \"2023-11-26 20:12:42\",\n    \"user_rating\": \"139\"\n  },\n  {\n    \"user_name\": \"Madeleyne\",\n    \"user_age\": \"39\",\n    \"user_time\": \"268\",\n    \"user_tries\": \"8\",\n    \"updated_datetime\": \"2023-11-26 21:15:13\",\n    \"user_rating\": \"146\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/new": {
+      "get": {
+        "summary": "Crea un juego nuevo",
+        "description": "Se puede obtener la misma respuesta con usando cualquier método [post, put, delete]",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "game",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Este valor solo se pasa cuando se quiere crear un juego nuevo cuando ya se esta jugando otro, este parámetro sirve para liberar el juego actual (limpiar estadísticas)"
+          },
+          {
+            "in": "header",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Nombre del usuario que jugará"
+          },
+          {
+            "in": "header",
+            "name": "age",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Edad del usuario que jugará"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Satisfactorio",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ranking_list": {
+                    "value": "[\n  {\n    \"user_name\": \"Alberto\",\n    \"user_age\": \"48\",\n    \"user_time\": \"265\",\n    \"user_tries\": \"7\",\n    \"updated_datetime\": \"2023-11-26 20:12:42\",\n    \"user_rating\": \"139\"\n  },\n  {\n    \"user_name\": \"Madeleyne\",\n    \"user_age\": \"39\",\n    \"user_time\": \"268\",\n    \"user_tries\": \"8\",\n    \"updated_datetime\": \"2023-11-26 21:15:13\",\n    \"user_rating\": \"146\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{game}": {
+      "get": {
+        "summary": "Get game data",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID of the game"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Satisfactorio",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Game data": {
+                    "value": "[\n  {\n    \"id\": 1234,\n    \"number\":\"8435\",\n    \"beat_user_name\":\"Alberto\",\n    \"beat_user_age\":\"48\",\n    \"beat_user_time\":\"0\",\n    \"beat_user_tries\":\"0\",\n    \"start_playing\":\"0\",\n    \"user_playing\":{\n                      \"1247\":[2,0,1700990044],\n                      \"1293\":[2,1,1700990131],\n                      \"2394\":[0,2,1700990147]\n                    },\n    \"updated_at\":\"2023-11-27 20:12:42\",\n    \"status\":\"1\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Validate an answer",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID of the game"
+          },
+          {
+            "in": "header",
+            "name": "number",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Answer (number) to validate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Game data": {
+                    "value": "[\n  {\n    \n  }\n]"
+                  }
+                }
+              }
+            }
+          },
+          "213": {
+            "description": "Time expires. Game over",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Time expires": {
+                    "value": "{\"errors\":[\"Time expires\"]}"
+                  }
+                }
+              }
+            }
+          },
+          "214": {
+            "description": "The provide number do not pass validations",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Is required": {
+                    "value": "{\"errors\":[\"The number is required\"]}"
+                  },
+                  "Must be integer": {
+                    "value": "{\"errors\":[\"The number must be an integer\"]}"
+                  },
+                  "Reach minimun": {
+                    "value": "{\"errors\":[\"The number has minimum of 1234\"]}"
+                  },
+                  "Reach maximun": {
+                    "value": "{\"errors\":[\"The number has maximun of 9876\"]}"
+                  }
+                }
+              }
+            }
+          },
+          "215": {
+            "description": "The provide number is repeated",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Repeated number": {
+                    "value": "[\n  {\"errors\":[\"Repeated number\"]}\n]"
+                  }
+                }
+              }
+            }
+          },
+          "216": {
+            "description": "The number is accepted but not solve the game",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Repeated number": {
+                    "value": "[\n  {\n    \"1247\":[2,0,1700990044],\n    \"1293\":[2,1,1700990131],\n    \"2394\":[0,2,1700990147]\n  }\n]"
+                  }
+                }
+              }
+            }
+          },
+          "217": {
+            "description": "The player won the game. Se devuelve el ranking.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "You won": {
+                    "value": "[\n  {\n    \"user_name\": \"Alberto\",\n    \"user_age\": \"48\",\n    \"user_time\": \"265\",\n    \"user_tries\": \"7\",\n    \"updated_datetime\": \"2023-11-26 20:12:42\",\n    \"user_rating\": \"139\"\n  },\n  {\n    \"user_name\": \"Madeleyne\",\n    \"user_age\": \"39\",\n    \"user_time\": \"268\",\n    \"user_tries\": \"8\",\n    \"updated_datetime\": \"2023-11-26 21:15:13\",\n    \"user_rating\": \"146\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Erase the game statistics",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID of the game"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Satisfactorio. Se devuelve el ranking",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Game clear": {
+                    "value": "[\n  {\n    \"user_name\": \"Alberto\",\n    \"user_age\": \"48\",\n    \"user_time\": \"265\",\n    \"user_tries\": \"7\",\n    \"updated_datetime\": \"2023-11-26 20:12:42\",\n    \"user_rating\": \"139\"\n  },\n  {\n    \"user_name\": \"Madeleyne\",\n    \"user_age\": \"39\",\n    \"user_time\": \"268\",\n    \"user_tries\": \"8\",\n    \"updated_datetime\": \"2023-11-26 21:15:13\",\n    \"user_rating\": \"146\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
